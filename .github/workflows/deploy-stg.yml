@@ -1,0 +1,35 @@
+# name: Deploy STG
+# on:
+#   push:
+#     branches:
+#       - develop
+#   pull_request:
+#     types: [opened, synchronize, reopened]
+#     branches:
+#       - develop
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-18.04
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: webfactory/ssh-agent@v0.5.2
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#       - uses: actions/setup-node@v2
+#         with:
+#           node-version: 14.x
+#           registry-url: 'https://npm.pkg.github.com'
+#       - run: yarn
+#         env:
+#           NODE_AUTH_TOKEN: '${{ secrets.ACCESS_TOKEN }}'
+#       - run: yarn build
+#         env:
+#           REACT_APP_HOST: '${{ secrets.REACT_APP_HOST }}'
+#           REACT_APP_CHECKOUT_URL: '${{ secrets.REACT_APP_CHECKOUT_URL }}'
+#       - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+#         with:
+#           source_dir: dist
+#           container_name: mf-listing-site-now
+#           connection_string: '${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}'
+#           sync: true
+
